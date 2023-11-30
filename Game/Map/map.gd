@@ -4,7 +4,6 @@ const layer_count = 2;
 
 func _ready():
 	Game.map = self;
-	print(get_node("TileMap").get_child_count())
 
 func is_field_occupied(coords :Vector2i):
 	var is_occupied = false;

@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://duvrkfk7chehl"]
 
-[ext_resource type="PackedScene" uid="uid://c3fnce21gmv7y" path="res://Game/UI/mouse_validater.tscn" id="1_0qpa4"]
+[ext_resource type="PackedScene" uid="uid://c3fnce21gmv7y" path="res://Game/UI/position_validater.tscn" id="1_0qpa4"]
 [ext_resource type="Script" path="res://Game/UI/GameCamera.gd" id="2_xwuky"]
 
 [node name="UI" type="Node2D"]
 
-[node name="MouseValidater" parent="." instance=ExtResource("1_0qpa4")]
+[node name="PositionValidater" parent="." instance=ExtResource("1_0qpa4")]
 
 [node name="GameCamera" type="Camera2D" parent="."]
 script = ExtResource("2_xwuky")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3fnce21gmv7y"]
 
 [ext_resource type="Texture2D" uid="uid://tqr08jq5eexn" path="res://buildable_tileset.png" id="1_3i4xm"]
-[ext_resource type="Script" path="res://Game/UI/mouse_validater.gd" id="1_o80gq"]
+[ext_resource type="Script" path="res://Game/UI/position_validater.gd" id="1_cwq2h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hw3tf"]
 texture = ExtResource("1_3i4xm")
@@ -13,8 +13,8 @@ texture_region_size = Vector2i(48, 48)
 tile_size = Vector2i(48, 48)
 sources/0 = SubResource("TileSetAtlasSource_hw3tf")
 
-[node name="MouseValidater" type="Node2D"]
-script = ExtResource("1_o80gq")
+[node name="PositionValidater" type="Node2D"]
+script = ExtResource("1_cwq2h")
 
 [node name="ValidatingTiles" type="TileMap" parent="."]
 modulate = Color(1, 1, 1, 0.54902)
