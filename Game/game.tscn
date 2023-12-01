@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbn4mirla405j"]
+[gd_scene load_steps=5 format=3 uid="uid://cbn4mirla405j"]
 
 [ext_resource type="PackedScene" uid="uid://duvrkfk7chehl" path="res://Game/UI/ui.tscn" id="1_rq66c"]
 [ext_resource type="PackedScene" uid="uid://r2fyqp5bgalh" path="res://Game/Map/map.tscn" id="2_5q5g5"]
 [ext_resource type="Script" path="res://Game/Map/map.gd" id="2_ks8e1"]
+[ext_resource type="Script" path="res://Game/KeyController.gd" id="4_4m8w4"]
 
 [node name="Game" type="Node2D"]
 
@@ -10,3 +11,6 @@
 script = ExtResource("2_ks8e1")
 
 [node name="UI" parent="." instance=ExtResource("1_rq66c")]
+
+[node name="KeyController" type="Node" parent="."]
+script = ExtResource("4_4m8w4")

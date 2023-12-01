@@ -1,11 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://duvrkfk7chehl"]
+[gd_scene load_steps=6 format=3 uid="uid://duvrkfk7chehl"]
 
 [ext_resource type="PackedScene" uid="uid://c3fnce21gmv7y" path="res://Game/UI/position_validater.tscn" id="1_0qpa4"]
+[ext_resource type="Script" path="res://Game/UI/ui.gd" id="1_moahd"]
 [ext_resource type="Script" path="res://Game/UI/GameCamera.gd" id="2_xwuky"]
+[ext_resource type="PackedScene" uid="uid://d3abihb4ucp2l" path="res://Game/UI/Menus/build_menu.tscn" id="3_wshdq"]
+[ext_resource type="PackedScene" uid="uid://uukjj875gpja" path="res://Game/UI/building_preview.tscn" id="4_w66eh"]
 
 [node name="UI" type="Node2D"]
+script = ExtResource("1_moahd")
 
 [node name="PositionValidater" parent="." instance=ExtResource("1_0qpa4")]
 
 [node name="GameCamera" type="Camera2D" parent="."]
 script = ExtResource("2_xwuky")
+
+[node name="BuildMenu" parent="GameCamera" instance=ExtResource("3_wshdq")]
+
+[node name="BuildingPreview" parent="." instance=ExtResource("4_w66eh")]

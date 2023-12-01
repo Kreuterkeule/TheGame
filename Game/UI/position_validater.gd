@@ -9,11 +9,11 @@ const GREEN_FIELD_COORDS :Vector2 = Vector2(1, 0);
 var validating = false;
 
 func _ready():
-	validate(true);
 	validate_pos(Vector2i(5, 3), Vector2i(-2, -1));
 
 func validate(value :bool) -> void:
 	validating = value;
+	visible = value;
 
 func validate_pos(tiles :Vector2i, offset :Vector2i) -> void:
 	move_by = offset;

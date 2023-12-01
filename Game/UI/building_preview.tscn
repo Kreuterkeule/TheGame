@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://uukjj875gpja"]
+
+[ext_resource type="Script" path="res://Game/UI/building_preview.gd" id="1_te53a"]
+[ext_resource type="Texture2D" uid="uid://d0je8gv2wiyea" path="res://MiniWorldSprites/Buildings/Wood/Barracks.png" id="2_xp5my"]
+
+[node name="BuildingPreview" type="Node2D"]
+script = ExtResource("1_te53a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.403922)
+texture = ExtResource("2_xp5my")
+hframes = 4
+vframes = 5

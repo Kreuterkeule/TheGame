@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3abihb4ucp2l"]
+
+[ext_resource type="Script" path="res://Game/UI/Menus/build_menu.gd" id="1_qyl6x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_psfid"]
+bg_color = Color(0.231373, 0.231373, 0.231373, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.156863, 0.894118, 1, 1)
+
+[node name="BuildMenu" type="CanvasLayer"]
+script = ExtResource("1_qyl6x")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 830.0
+offset_top = 396.0
+offset_right = 1152.0
+offset_bottom = 647.0
+
+[node name="BarracksButton" type="Button" parent="."]
+offset_left = 830.0
+offset_top = 394.0
+offset_right = 915.0
+offset_bottom = 467.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
+theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
+text = "Barracks"
+
+[node name="MiningBaseButton" type="Button" parent="."]
+offset_left = 915.0
+offset_top = 394.0
+offset_right = 1013.0
+offset_bottom = 467.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
+theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
+text = "MiningBase"
+
+[connection signal="pressed" from="BarracksButton" to="." method="_on_barracks_button_pressed"]
+[connection signal="pressed" from="MiningBaseButton" to="." method="_on_base_button_pressed"]

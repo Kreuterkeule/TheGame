@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ixk4f6du5qt8"]
+
+[ext_resource type="Script" path="res://Game/UI/mouse_controller.gd" id="1_igtfc"]
+
+[node name="MouseController" type="Node2D"]
+script = ExtResource("1_igtfc")

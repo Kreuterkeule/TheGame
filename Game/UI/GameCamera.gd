@@ -25,7 +25,7 @@ func _process(delta):
 		self.position += SPEED * delta * Vector2(0, 1);
 
 func _input(event):
-	
+	# close zoom is a larger number
 	if (Input.is_action_pressed("scroll_down") && self.zoom.x + ZOOM_SPEED.x <= MAX_ZOOM):
 		self.zoom += ZOOM_SPEED;
 	if (Input.is_action_just_pressed("scroll_up") && self.zoom.x - ZOOM_SPEED.x >= MIN_ZOOM):
