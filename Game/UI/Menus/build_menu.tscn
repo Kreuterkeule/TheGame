@@ -14,25 +14,25 @@ border_color = Color(0.156863, 0.894118, 1, 1)
 script = ExtResource("1_qyl6x")
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 830.0
-offset_top = 396.0
-offset_right = 1152.0
-offset_bottom = 647.0
+offset_left = 1597.0
+offset_top = 828.0
+offset_right = 1919.0
+offset_bottom = 1079.0
 
 [node name="BarracksButton" type="Button" parent="."]
-offset_left = 830.0
-offset_top = 394.0
-offset_right = 915.0
-offset_bottom = 467.0
+offset_left = 1597.0
+offset_top = 826.0
+offset_right = 1682.0
+offset_bottom = 899.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
 theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
 text = "Barracks"
 
 [node name="MiningBaseButton" type="Button" parent="."]
-offset_left = 915.0
-offset_top = 394.0
-offset_right = 1013.0
-offset_bottom = 467.0
+offset_left = 1682.0
+offset_top = 826.0
+offset_right = 1780.0
+offset_bottom = 899.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
 theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
 text = "MiningBase"
