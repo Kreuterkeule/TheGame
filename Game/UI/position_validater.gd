@@ -28,11 +28,14 @@ func _process(_delta) -> void:
 		queue_redraw();
 	if (!validating): return;
 	$ValidatingTiles.clear();
+	var fields = [];
 	var mouse_grid_coords :Vector2 = $ValidatingTiles.local_to_map(get_global_mouse_position());
 	for x in range(mouse_grid_coords.x + move_by.x, mouse_grid_coords.x + validate_tiles.x + move_by.x):
 		for y in range(mouse_grid_coords.y + move_by.y, mouse_grid_coords.y + validate_tiles.y + move_by.y):
 			var is_valid_field = !Game.map.is_field_occupied(Vector2i(x, y)); # the maps have the same coords
+			fields.append(is_valid_field);
 			$ValidatingTiles.set_cell(0, Vector2i(x, y), 0, GREEN_FIELD_COORDS if is_valid_field else RED_FIELD_COORDS, 0);
+	Game.buildable_pos = true if fields.all(func(e): return e) else false;
 
 func _draw():
 	if (show_grid):
@@ -45,3 +48,9 @@ func _draw():
 
 		for x in range(-floor(grid_scale / 2), floor(grid_scale - grid_scale / 2 + 1)):
 			draw_line(Vector2(x * tile_size.x - (tile_size.y / 2), 0 - (tile_size.y  /2) - (grid_scale * tile_size.x / 2)), Vector2(x * tile_size.x - (tile_size.y / 2), grid_scale * tile_size.y - (tile_size.x / 2) - (grid_scale * tile_size.x / 2)), Color(0.0, 255.0, 255.0, float(1)/float(float(abs(x))/2) if x != 0 else 1));
+
+func occupie_tiles(position):
+	var grid_position = $ValidatingTiles.local_to_map(position);
+	for x in range(grid_position.x + move_by.x, grid_position.x + validate_tiles.x + move_by.x):
+		for y in range(grid_position.y + move_by.y, grid_position.y + validate_tiles.y + move_by.y):
+			Game.map.occupied_map[Vector2i(x, y)] = true;

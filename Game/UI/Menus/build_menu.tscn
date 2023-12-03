@@ -22,20 +22,20 @@ offset_bottom = 1079.0
 [node name="BarracksButton" type="Button" parent="."]
 offset_left = 1597.0
 offset_top = 826.0
-offset_right = 1682.0
+offset_right = 1714.0
 offset_bottom = 899.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
 theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
-text = "Barracks"
+text = "Barracks (B)"
 
 [node name="MiningBaseButton" type="Button" parent="."]
-offset_left = 1682.0
+offset_left = 1714.0
 offset_top = 826.0
-offset_right = 1780.0
+offset_right = 1849.0
 offset_bottom = 899.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_psfid")
 theme_override_styles/hover = SubResource("StyleBoxFlat_psfid")
-text = "MiningBase"
+text = "MiningBase (M)"
 
 [connection signal="pressed" from="BarracksButton" to="." method="_on_barracks_button_pressed"]
 [connection signal="pressed" from="MiningBaseButton" to="." method="_on_base_button_pressed"]

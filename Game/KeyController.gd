@@ -1,9 +1,15 @@
 extends Node
 
-func _input(_event):
-	if (Input.is_action_just_pressed("escape_key")):
-		Game.change_action(Game.ACTION.NO_ACTION);
-	if (Input.is_key_pressed(KEY_F10)): # can be changed just for the devs cus fullscreen
-		get_tree().quit();
-	if (Input.is_key_pressed(KEY_SPACE)):
-		Game.execute(Game.INPUT_TYPE.SPACE);
+func _process(delta):
+	if (Input.is_action_just_pressed("KEY_B")):
+		Game.execute(KEY_B);
+	if (Input.is_action_just_pressed("KEY_F10")):
+		Game.execute(KEY_F10);
+	if (Input.is_action_just_pressed("KEY_ESCAPE")):
+		Game.execute(KEY_ESCAPE);
+	if (Input.is_action_just_pressed("KEY_SPACE")):
+		Game.execute(KEY_SPACE);
+	if (Input.is_action_just_pressed("KEY_A")):
+		Game.execute(KEY_A);
+	if (Input.is_action_just_pressed("KEY_M")):
+		Game.execute(KEY_M);

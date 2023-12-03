@@ -2,12 +2,24 @@
 
 extends Node2D
 
+# PRELOADED SCENES
+var barracks_scene = preload("res://Game/Buildings/building_barracks.tscn");
+var mining_base_scene = preload("res://Game/Buildings/building_mining_base.tscn")
+
 var map = null;
 
 var UI = null;
 
+var mouse_over = null;
+
+var buildable_pos = false;
+
+func _process(delta):
+	#print(mouse_over);
+	pass;
+
 func not_implemented():
-	print("ERROR!: This Function should not be caused, your function is not yet implemented");
+	print_debug("ERROR!: This Function should not be caused, your function is not yet implemented");
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
@@ -15,19 +27,15 @@ func _ready():
 		MAP_ACTION_TO_CURSOR.append(null);
 		START_ACTION.append(Callable(self, "not_implemented"));
 		CLEAN_ACTION.append(Callable(self, "not_implemented"));
-		ACTION_EXECUTE.append(Callable(self, "not_implemented"));
 	MAP_ACTION_TO_CURSOR[ACTION.BUILD] = CURSORS.PRECISION;
 	MAP_ACTION_TO_CURSOR[ACTION.MOVE] = CURSORS.PRECISION;
 	MAP_ACTION_TO_CURSOR[ACTION.NO_ACTION] = CURSORS.MOUSE;
 	MAP_ACTION_TO_CURSOR[ACTION.SELECT] = CURSORS.SELECT;
+	MAP_ACTION_TO_CURSOR[ACTION.SELECT_BUILDING] = CURSORS.SELECT;
 	START_ACTION[ACTION.BUILD] = Callable(self, "start_build");
 	CLEAN_ACTION[ACTION.BUILD] = Callable(self, "clean_build");
 	START_ACTION[ACTION.NO_ACTION] = Callable(self, "start_no_action");
 	CLEAN_ACTION[ACTION.NO_ACTION] = Callable(self, "clean_no_action");
-	ACTION_EXECUTE[ACTION.BUILD] = Callable(self, "execute_build");
-	ACTION_EXECUTE[ACTION.SELECT] = Callable(self, "execute_select");
-	ACTION_EXECUTE[ACTION.MOVE] = Callable(self, "execute_move");
-	ACTION_EXECUTE[ACTION.NO_ACTION] = Callable(self, "execute_nothing");
 	self.change_action(ACTION.NO_ACTION);
 
 
@@ -40,7 +48,7 @@ var CURSORS = {
 
 
 enum BUILDINGS { BARRACKS, MINING_BASE };
-enum ACTION { BUILD, MOVE, SELECT, NO_ACTION } # TODO needs changes
+enum ACTION { BUILD, MOVE, SELECT, NO_ACTION, SELECT_BUILDING } # TODO needs changes
 enum INPUT_TYPE { PRIMARY, SECONDARY, SPACE }
 
 var selected_building :int = 0;
@@ -48,13 +56,58 @@ var selected_building :int = 0;
 var MAP_ACTION_TO_CURSOR = []
 var START_ACTION = [];
 var CLEAN_ACTION = [];
-var ACTION_EXECUTE = []; # action that should be called on event
+var BUILD = {
+	BUILDINGS.BARRACKS: Callable(self, "build_barracks"),
+	BUILDINGS.MINING_BASE: Callable(self, "build_mining_base"),
+}
+var INPUT_MAP = {
+	"primary_mouse_button": {
+		ACTION.BUILD: Callable(self, "build"),
+	},
+	KEY_SPACE: {
+		ACTION.BUILD: Callable(self, "not_implemented"), # submit build
+		ACTION.NO_ACTION: Callable(self, "not_implemented"),
+		ACTION.MOVE: Callable(self, "not_implemented"),
+		ACTION.SELECT: Callable(self, "not_implemented"),
+	},
+	KEY_A: {
+		ACTION.NO_ACTION: Callable(self, "not_implemented"),
+	},
+	KEY_B: {
+		ACTION.NO_ACTION: Callable(self, "build_select_building"),
+		ACTION.SELECT_BUILDING: Callable(self, "preview_barracks"),
+	},
+	KEY_M: {
+		ACTION.SELECT_BUILDING: Callable(self, "preview_mining_base"),
+	},
+	KEY_F10: {
+		"is_global_action": true, # this event does not change on different actions
+		"method": Callable(self, "exit_game"),
+	},
+	KEY_ESCAPE: {
+		ACTION.BUILD: Callable(self, "exit_build"), # Nice, that this works
+		ACTION.SELECT_BUILDING: Callable(self, "exit_select_building"),
+		ACTION.NO_ACTION: Callable(self, "clean_all_actions"), # for good measures
+	}
+};
 
 var current_action :int = ACTION.NO_ACTION;
 # the idea is actions[current_action].call_func()
 
-func execute(input_type :int):
-	pass
+func execute(input_key):
+	print_debug(input_key);
+	if (!INPUT_MAP.has(input_key)):
+		print_debug("WARNING: Key " + str(input_key) + " not recognized");
+		return;
+	if (!INPUT_MAP[input_key].has(current_action)):
+		if (INPUT_MAP[input_key].has("is_global_action")): # could check for the value, but what if the value isn't set yet
+			print_debug("calling a action-independent event");
+			INPUT_MAP[input_key].method.call();
+			return;
+		else:
+			print_debug("WARNING: Key " + str(input_key) + " has no method for action '" + ACTION.keys()[current_action] + "'")
+			return;
+	INPUT_MAP[input_key][current_action].call();
 
 func change_action(action :int):
 	var old_action = current_action;
@@ -66,6 +119,24 @@ func change_action(action :int):
 func change_cursor(action :int):
 	Input.set_custom_mouse_cursor(MAP_ACTION_TO_CURSOR[action]);
 
+# INPUT FUNCTIONS
+
+func build_select_building():
+	UI.change_action_menu(UI.MENU.BUILD);
+
+func exit_select_building():
+	UI.change_action_menu(UI.default_menu);
+	reset_action();
+func exit_build():
+	UI.change_action_menu(UI.default_menu);
+	reset_action();
+
+func clean_all_actions():
+	for action in ACTION.keys():
+		CLEAN_ACTION[ACTION[action]].call();
+func reset_action():
+	change_action(ACTION.NO_ACTION);
+
 # ACITON SETUP AND CLEAN
 
 func start_build():
@@ -73,20 +144,45 @@ func start_build():
 	UI.get_node("BuildingPreview").start();
 func clean_build():
 	UI.get_node("BuildingPreview").stop();
-	
+	UI.change_action_menu(UI.MENU.ACTION);
+
 func start_no_action():
 	pass;
 func clean_no_action():
 	pass;
 
-func execute_nothing():
-	print("is there anything to do here?");
+# PREVIEW BUILDINGS
 
-func execute_build():
-	pass;
+func preview_barracks():
+	UI.get_node("Menus/BuildMenu/BarracksButton").emit_signal("pressed");
+func preview_mining_base():
+	UI.get_node("Menus/BuildMenu/MiningBaseButton").emit_signal("pressed");	
 
-func execute_select():
-	pass;
+# BUILD BUILDINGS
 
-func execute_move():
-	pass;
+func build():
+	BUILD[selected_building].call();
+
+func build_barracks():
+	if (!buildable_pos):
+		change_action(ACTION.NO_ACTION);
+		return;
+	var barracks = barracks_scene.instantiate();
+	barracks.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(get_global_mouse_position()));
+	UI.get_node("PositionValidater").occupie_tiles(barracks.position);
+	map.get_node("Buildings").add_child(barracks)
+	change_action(ACTION.NO_ACTION);
+func build_mining_base():
+	if (!buildable_pos):
+		change_action(ACTION.NO_ACTION);
+		return;
+	var mining_base = mining_base_scene.instantiate();
+	mining_base.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(get_global_mouse_position()));
+	mining_base.position -= Vector2(24, 24); # has an even tilesize
+	UI.get_node("PositionValidater").occupie_tiles(mining_base.position);
+	map.get_node("Buildings").add_child(mining_base);
+	change_action(ACTION.NO_ACTION);
+
+func exit_game():
+	print_debug("exiting game");
+	get_tree().quit();

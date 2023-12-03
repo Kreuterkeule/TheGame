@@ -10,6 +10,10 @@
 [node name="Map" parent="." instance=ExtResource("2_5q5g5")]
 script = ExtResource("2_ks8e1")
 
+[node name="Buildings" type="Node2D" parent="Map"]
+
+[node name="Units" type="Node2D" parent="Map"]
+
 [node name="UI" parent="." instance=ExtResource("1_rq66c")]
 
 [node name="KeyController" type="Node" parent="."]

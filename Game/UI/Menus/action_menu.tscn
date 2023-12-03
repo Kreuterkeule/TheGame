@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://cewnh8c0xmgaf"]
+
+[ext_resource type="Script" path="res://Game/UI/Menus/action_menu.gd" id="1_dmr8e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jy0o"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.913725, 0.909804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1lhs"]
+
+[node name="ActionMenu" type="CanvasLayer"]
+script = ExtResource("1_dmr8e")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 1597.0
+offset_top = 828.0
+offset_right = 1919.0
+offset_bottom = 1079.0
+
+[node name="BuildButton" type="Button" parent="."]
+offset_left = 1598.0
+offset_top = 828.0
+offset_right = 1692.0
+offset_bottom = 878.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_7jy0o")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i1lhs")
+text = "Build (B)"
+
+[connection signal="pressed" from="BuildButton" to="." method="_on_build_button_pressed"]

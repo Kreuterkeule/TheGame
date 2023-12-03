@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbe7064sdqnts"]
+
+[ext_resource type="Texture2D" uid="uid://d0je8gv2wiyea" path="res://MiniWorldSprites/Buildings/Wood/Barracks.png" id="1_ytjde"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rhfud"]
+size = Vector2(96, 96)
+
+[node name="BuildingMiningBase" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rhfud")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(6.6, 6.6)
+texture = ExtResource("1_ytjde")
+hframes = 4
+vframes = 5
+frame = 5
