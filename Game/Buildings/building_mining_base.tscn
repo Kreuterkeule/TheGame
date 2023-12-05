@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbe7064sdqnts"]
+[gd_scene load_steps=4 format=3 uid="uid://bbe7064sdqnts"]
 
+[ext_resource type="Script" path="res://Game/Buildings/building_mining_base.gd" id="1_7lms5"]
 [ext_resource type="Texture2D" uid="uid://d0je8gv2wiyea" path="res://MiniWorldSprites/Buildings/Wood/Barracks.png" id="1_ytjde"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rhfud"]
 size = Vector2(96, 96)
 
 [node name="BuildingMiningBase" type="Area2D"]
+script = ExtResource("1_7lms5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_rhfud")

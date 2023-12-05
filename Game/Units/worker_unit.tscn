@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://dktdvup7s8iv5"]
+
+[ext_resource type="Script" path="res://Game/Units/worker_unit.gd" id="1_ghp3x"]
+[ext_resource type="Texture2D" uid="uid://dni5hudn55drt" path="res://MiniWorldSprites/Characters/Soldiers/Melee/AssasinTemplate.png" id="1_phsck"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdgrn"]
+bg_color = Color(0.909804, 0.458824, 0, 0)
+skew = Vector2(0.5, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.705882, 0.360784, 0, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ajwi"]
+size = Vector2(12, 8)
+
+[node name="WorkerUnit" type="CharacterBody2D"]
+script = ExtResource("1_ghp3x")
+
+[node name="Box" type="Panel" parent="."]
+visible = false
+offset_left = -24.0
+offset_top = -10.0
+offset_right = 26.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cdgrn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 11)
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_6ajwi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_phsck")
+hframes = 5
+vframes = 12

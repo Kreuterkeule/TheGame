@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbn4mirla405j"]
+[gd_scene load_steps=6 format=3 uid="uid://cbn4mirla405j"]
 
 [ext_resource type="PackedScene" uid="uid://duvrkfk7chehl" path="res://Game/UI/ui.tscn" id="1_rq66c"]
 [ext_resource type="PackedScene" uid="uid://r2fyqp5bgalh" path="res://Game/Map/map.tscn" id="2_5q5g5"]
 [ext_resource type="Script" path="res://Game/Map/map.gd" id="2_ks8e1"]
+[ext_resource type="PackedScene" uid="uid://dktdvup7s8iv5" path="res://Game/Units/worker_unit.tscn" id="3_hcb21"]
 [ext_resource type="Script" path="res://Game/KeyController.gd" id="4_4m8w4"]
 
 [node name="Game" type="Node2D"]
@@ -13,6 +14,18 @@ script = ExtResource("2_ks8e1")
 [node name="Buildings" type="Node2D" parent="Map"]
 
 [node name="Units" type="Node2D" parent="Map"]
+
+[node name="WorkerUnit" parent="Map/Units" instance=ExtResource("3_hcb21")]
+position = Vector2(-271, 121)
+
+[node name="WorkerUnit2" parent="Map/Units" instance=ExtResource("3_hcb21")]
+position = Vector2(-247, -140)
+
+[node name="WorkerUnit3" parent="Map/Units" instance=ExtResource("3_hcb21")]
+position = Vector2(193, -193)
+
+[node name="WorkerUnit4" parent="Map/Units" instance=ExtResource("3_hcb21")]
+position = Vector2(-534, 30)
 
 [node name="UI" parent="." instance=ExtResource("1_rq66c")]
 

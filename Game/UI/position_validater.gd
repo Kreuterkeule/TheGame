@@ -4,8 +4,8 @@ extends Node2D
 
 const RED_FIELD_COORDS :Vector2 = Vector2(0, 0); # coords in tileset
 const GREEN_FIELD_COORDS :Vector2 = Vector2(1, 0);
-@export var validate_tiles :Vector2i = Vector2i(1, 1);
-@export var move_by :Vector2i = Vector2i(0, 0);
+var validate_tiles :Vector2i = Vector2i(1, 1);
+var move_by :Vector2i = Vector2i(0, 0);
 var validating = false;
 var show_grid = false;
 var tile_size :Vector2i = Vector2i.ZERO;
@@ -49,8 +49,3 @@ func _draw():
 		for x in range(-floor(grid_scale / 2), floor(grid_scale - grid_scale / 2 + 1)):
 			draw_line(Vector2(x * tile_size.x - (tile_size.y / 2), 0 - (tile_size.y  /2) - (grid_scale * tile_size.x / 2)), Vector2(x * tile_size.x - (tile_size.y / 2), grid_scale * tile_size.y - (tile_size.x / 2) - (grid_scale * tile_size.x / 2)), Color(0.0, 255.0, 255.0, float(1)/float(float(abs(x))/2) if x != 0 else 1));
 
-func occupie_tiles(position):
-	var grid_position = $ValidatingTiles.local_to_map(position);
-	for x in range(grid_position.x + move_by.x, grid_position.x + validate_tiles.x + move_by.x):
-		for y in range(grid_position.y + move_by.y, grid_position.y + validate_tiles.y + move_by.y):
-			Game.map.occupied_map[Vector2i(x, y)] = true;

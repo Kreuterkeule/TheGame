@@ -13,3 +13,5 @@ func _process(delta):
 		Game.execute(KEY_A);
 	if (Input.is_action_just_pressed("KEY_M")):
 		Game.execute(KEY_M);
+	if (Input.is_action_just_pressed("KEY_R")):
+		Game.execute(KEY_R);

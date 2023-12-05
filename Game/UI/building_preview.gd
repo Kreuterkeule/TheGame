@@ -4,25 +4,6 @@ var active = false;
 var x_even = false;
 var y_even = false;
 
-var buildings = {
-	Game.BUILDINGS.MINING_BASE: {
-		"texture": load("res://MiniWorldSprites/Buildings/Wood/Barracks.png"),
-		"size": Vector2i(2, 2), # Vector2i size in tiles to be checked v(width, height)
-		"offset": Vector2i(-1, -1),
-		"sprite_scale": 6.6,
-		"animation": Vector2i(4, 5),
-		"frame": 5,
-	},
-	Game.BUILDINGS.BARRACKS: {
-		"texture": load("res://MiniWorldSprites/Buildings/Wood/Houses.png"),
-		"size": Vector2i(3, 3),
-		"offset": Vector2i(-1, -1),
-		"sprite_scale": 10.0,
-		"animation": Vector2i(3, 4),
-		"frame": 0,
-	}
-}
-
 func start():
 	active = true;
 	visible = true;
@@ -52,7 +33,7 @@ func _process(_delta):
 	# set buildable position, cause the values are all here, why not just post them from here
 
 func change_building(building_key :int):
-	var building = buildings[building_key];
+	var building = Game.map.buildings[building_key];
 	$"../PositionValidater".validate_pos(building.size, building.offset)
 	$Sprite2D.texture = building.texture;
 	$Sprite2D.scale = Vector2(building.sprite_scale, building.sprite_scale);

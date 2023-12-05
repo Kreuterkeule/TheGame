@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="TheGame"
-run/main_scene="res://Game/game.tscn"
+run/main_scene="res://Game/UI/Screens/multiplayer_screen.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]

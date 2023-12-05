@@ -1,7 +1,10 @@
 extends StaticBody2D
 
+var team;
 
-
+func _ready():
+	if (team != Game.team):
+		modulate = Color(1, 0 ,0);
 
 func _on_mouse_entered():
 	print("MOUSE ENTERED BUILDING BARRACKS")

@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqpmkcrdgqm7v"]
+
+[ext_resource type="Script" path="res://Game/UI/Tools/select_box.gd" id="1_j4qfh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bagb3"]
+bg_color = Color(0.905882, 0.458824, 0, 0.137255)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.894118, 0.376471, 0, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SelectBox" type="Node2D"]
+script = ExtResource("1_j4qfh")
+
+[node name="Box" type="Panel" parent="."]
+offset_right = 530.0
+offset_bottom = 247.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bagb3")

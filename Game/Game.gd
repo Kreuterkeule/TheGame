@@ -6,13 +6,22 @@ extends Node2D
 var barracks_scene = preload("res://Game/Buildings/building_barracks.tscn");
 var mining_base_scene = preload("res://Game/Buildings/building_mining_base.tscn")
 
+var controllable_units = [];
+var selected_units = [];
+
+var selected_building_ref;
+
 var map = null;
 
 var UI = null;
 
 var mouse_over = null;
 
-var buildable_pos = false;
+var buildable_pos = true;
+
+var team;
+
+var players = {}
 
 func _process(delta):
 	#print(mouse_over);
@@ -57,12 +66,19 @@ var MAP_ACTION_TO_CURSOR = []
 var START_ACTION = [];
 var CLEAN_ACTION = [];
 var BUILD = {
-	BUILDINGS.BARRACKS: Callable(self, "build_barracks"),
-	BUILDINGS.MINING_BASE: Callable(self, "build_mining_base"),
+	BUILDINGS.BARRACKS: Callable(self, "create_barracks"),
+	BUILDINGS.MINING_BASE: Callable(self, "create_mining_base"),
 }
 var INPUT_MAP = {
 	"primary_mouse_button": {
 		ACTION.BUILD: Callable(self, "build"),
+		ACTION.NO_ACTION: Callable(self, "start_select"),
+	},
+	"primary_mouse_button_released": {
+		ACTION.SELECT: Callable(self, "end_select"),
+	},
+	"secondary_mouse_button": {
+		ACTION.BUILD: Callable(self, "exit_build"), # usabillity? if not remove
 	},
 	KEY_SPACE: {
 		ACTION.BUILD: Callable(self, "not_implemented"), # submit build
@@ -88,7 +104,11 @@ var INPUT_MAP = {
 		ACTION.BUILD: Callable(self, "exit_build"), # Nice, that this works
 		ACTION.SELECT_BUILDING: Callable(self, "exit_select_building"),
 		ACTION.NO_ACTION: Callable(self, "clean_all_actions"), # for good measures
-	}
+	},
+	KEY_R: {
+		"is_global_action": true,
+		"method": Callable(self, "reset_camera"),
+	},
 };
 
 var current_action :int = ACTION.NO_ACTION;
@@ -120,6 +140,17 @@ func change_cursor(action :int):
 	Input.set_custom_mouse_cursor(MAP_ACTION_TO_CURSOR[action]);
 
 # INPUT FUNCTIONS
+
+func start_select():
+	UI.get_node("SelectBox").start();
+	change_action(ACTION.SELECT);
+func end_select():
+	var bounds = UI.get_node("SelectBox").stop();
+	change_action(ACTION.NO_ACTION);
+	select_units(bounds);
+
+func reset_camera():
+	UI.get_node("GameCamera").position = Vector2.ZERO;
 
 func build_select_building():
 	UI.change_action_menu(UI.MENU.BUILD);
@@ -163,26 +194,55 @@ func preview_mining_base():
 func build():
 	BUILD[selected_building].call();
 
-func build_barracks():
-	if (!buildable_pos):
+func create_barracks():
+	var pos = get_global_mouse_position();	
+	if (!map.validate_pos(pos, BUILDINGS.BARRACKS)):
 		change_action(ACTION.NO_ACTION);
 		return;
+	build_barracks.rpc(pos, team);
+	change_action(ACTION.NO_ACTION);	
+@rpc("any_peer", "call_local")
+func build_barracks(pos :Vector2, t):
 	var barracks = barracks_scene.instantiate();
-	barracks.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(get_global_mouse_position()));
-	UI.get_node("PositionValidater").occupie_tiles(barracks.position);
+	barracks.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(pos));
+	barracks.team = t;
+	map.occupie_tiles(barracks.position, BUILDINGS.BARRACKS);
 	map.get_node("Buildings").add_child(barracks)
-	change_action(ACTION.NO_ACTION);
-func build_mining_base():
-	if (!buildable_pos):
+func create_mining_base():
+	var pos = get_global_mouse_position();
+	if (!map.validate_pos(pos, BUILDINGS.MINING_BASE)):
 		change_action(ACTION.NO_ACTION);
 		return;
+	build_mining_base.rpc(pos, team);
+	change_action(ACTION.NO_ACTION);	
+@rpc("any_peer", "call_local")
+func build_mining_base(pos :Vector2, t):
 	var mining_base = mining_base_scene.instantiate();
-	mining_base.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(get_global_mouse_position()));
+	mining_base.position = Game.map.get_node("TileMap").map_to_local(Game.map.get_node("TileMap").local_to_map(pos));
+	mining_base.team = t;
 	mining_base.position -= Vector2(24, 24); # has an even tilesize
-	UI.get_node("PositionValidater").occupie_tiles(mining_base.position);
+	map.occupie_tiles(mining_base.position, BUILDINGS.MINING_BASE);
 	map.get_node("Buildings").add_child(mining_base);
-	change_action(ACTION.NO_ACTION);
 
+func select_units(bounds):
+	print_debug("SELECTING IN: " + str(bounds))
+	var start = bounds.from;
+	var end = bounds.to;
+	var area = [];
+	area.append(Vector2(min(start.x, end.x), min(start.y, end.y)));
+	area.append(Vector2(max(start.x, end.x), max(start.y, end.y)));
+	var ut = get_units_in_area(area);
+	for u in controllable_units:
+		u.set_selected(false);
+	for u in ut:
+		u.set_selected(true);
+
+func get_units_in_area(area):
+	var u = []
+	for unit in controllable_units:
+		if (unit.position.x > area[0].x and unit.position.x < area[1].x and unit.position.y > area[0].y and unit.position.y < area[1].y):
+			u.append(unit);
+	return u;
 func exit_game():
 	print_debug("exiting game");
 	get_tree().quit();
