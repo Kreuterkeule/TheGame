@@ -79,6 +79,7 @@ var INPUT_MAP = {
 	},
 	"secondary_mouse_button": {
 		ACTION.BUILD: Callable(self, "exit_build"), # usabillity? if not remove
+		ACTION.NO_ACTION: Callable(self, "move_units"),
 	},
 	KEY_SPACE: {
 		ACTION.BUILD: Callable(self, "not_implemented"), # submit build
@@ -141,6 +142,8 @@ func change_cursor(action :int):
 
 # INPUT FUNCTIONS
 
+func move_units():
+	pass;
 func start_select():
 	UI.get_node("SelectBox").start();
 	change_action(ACTION.SELECT);

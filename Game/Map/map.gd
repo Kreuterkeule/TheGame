@@ -8,7 +8,7 @@ var buildings = {
 		"texture": load("res://MiniWorldSprites/Buildings/Wood/Barracks.png"),
 		"size": Vector2i(2, 2), # Vector2i size in tiles to be checked v(width, height)
 		"offset": Vector2i(-1, -1),
-		"sprite_scale": 6.6,
+		"sprite_scale": 5,
 		"animation": Vector2i(4, 5),
 		"frame": 5,
 	},
@@ -16,7 +16,7 @@ var buildings = {
 		"texture": load("res://MiniWorldSprites/Buildings/Wood/Houses.png"),
 		"size": Vector2i(3, 3),
 		"offset": Vector2i(-1, -1),
-		"sprite_scale": 10.0,
+		"sprite_scale": 8.0,
 		"animation": Vector2i(3, 4),
 		"frame": 0,
 	}
