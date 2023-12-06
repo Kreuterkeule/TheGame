@@ -31,7 +31,7 @@ func _ready():
 	self.add_to_group("controllable_units");
 	
 	if (team != Game.team):
-		$Sprite2D.modulate = Color(255, 0, 0, 1);
+		$Sprite2D.modulate = Color(255, 0, 0, 0.5);
 	
 	navigator.path_desired_distance = 48.0;
 	navigator.target_desired_distance = 48.0;

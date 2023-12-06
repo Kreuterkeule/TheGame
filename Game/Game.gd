@@ -259,7 +259,7 @@ func select_units(bounds):
 func build_unit(unit, spawn_position):
 	build_unit_rpc.rpc(unit, spawn_position, team);
 @rpc("any_peer", "call_local")
-func build_unit_rpc(unit, spawn_position, target_team):
+func build_unit_rpc(unit, spawn_position, target_team): # TODO maybe can't pass instantiated objects over rpc... + unit movement on multiplayer
 	unit.position = spawn_position - Vector2(60 * randi_range(-1 ,1), 60 * randi_range(-1 ,1)); # temp offset
 	unit.team = target_team;
 	map.get_node("Units").add_child(unit);
