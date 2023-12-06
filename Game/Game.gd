@@ -23,8 +23,8 @@ var team;
 
 var players = {}
 
-func _process(delta):
-	#print(mouse_over);
+func _process(_delta):
+	print(mouse_over);
 	pass;
 
 func not_implemented():
@@ -55,9 +55,9 @@ var CURSORS = {
 	"PRECISION": load("res://assets/cursors/precision.png"),
 }
 
-
+enum NODE_TYPE { BUILDING, UNIT }
 enum BUILDINGS { BARRACKS, MINING_BASE };
-enum ACTION { BUILD, MOVE, SELECT, NO_ACTION, SELECT_BUILDING } # TODO needs changes
+enum ACTION { BUILD, MOVE, SELECT, NO_ACTION, SELECT_BUILDING, CONTROLLING_UNIT } # TODO needs changes
 enum INPUT_TYPE { PRIMARY, SECONDARY, SPACE }
 
 var selected_building :int = 0;
@@ -113,20 +113,16 @@ var INPUT_MAP = {
 };
 
 var current_action :int = ACTION.NO_ACTION;
-# the idea is actions[current_action].call_func()
+# the idea is actions[current_action].call()
 
 func execute(input_key):
-	print_debug(input_key);
 	if (!INPUT_MAP.has(input_key)):
-		print_debug("WARNING: Key " + str(input_key) + " not recognized");
 		return;
 	if (!INPUT_MAP[input_key].has(current_action)):
 		if (INPUT_MAP[input_key].has("is_global_action")): # could check for the value, but what if the value isn't set yet
-			print_debug("calling a action-independent event");
 			INPUT_MAP[input_key].method.call();
 			return;
 		else:
-			print_debug("WARNING: Key " + str(input_key) + " has no method for action '" + ACTION.keys()[current_action] + "'")
 			return;
 	INPUT_MAP[input_key][current_action].call();
 
@@ -143,14 +139,34 @@ func change_cursor(action :int):
 # INPUT FUNCTIONS
 
 func move_units():
-	pass;
+	var mouse_pos = get_global_mouse_position();
+	for unit in selected_units:
+		unit.set_target(mouse_pos);
+		unit.set_state(unit.STATE.MOVING);
 func start_select():
 	UI.get_node("SelectBox").start();
 	change_action(ACTION.SELECT);
 func end_select():
 	var bounds = UI.get_node("SelectBox").stop();
-	change_action(ACTION.NO_ACTION);
-	select_units(bounds);
+	for unit in selected_units:
+		unit.set_selected(false);
+	selected_units = [];
+	if (selected_building_ref):
+		selected_building_ref.deselect();
+		selected_building_ref = null;
+	if bounds.from.distance_to(bounds.to) < 10:
+		if mouse_over:
+			# TODO handle click on unit (group with just one unit);
+			if (mouse_over.type == NODE_TYPE.UNIT):
+				selected_units.append(mouse_over);
+				mouse_over.select();
+			if (mouse_over.type == NODE_TYPE.BUILDING):
+				selected_building_ref = mouse_over;
+				selected_building_ref.select();
+		change_action(ACTION.NO_ACTION)
+	else:
+		change_action(ACTION.NO_ACTION);
+		select_units(bounds);
 
 func reset_camera():
 	UI.get_node("GameCamera").position = Vector2.ZERO;
@@ -228,7 +244,6 @@ func build_mining_base(pos :Vector2, t):
 	map.get_node("Buildings").add_child(mining_base);
 
 func select_units(bounds):
-	print_debug("SELECTING IN: " + str(bounds))
 	var start = bounds.from;
 	var end = bounds.to;
 	var area = [];
@@ -239,6 +254,17 @@ func select_units(bounds):
 		u.set_selected(false);
 	for u in ut:
 		u.set_selected(true);
+	selected_units = ut;
+
+func build_unit(unit, spawn_position):
+	build_unit_rpc.rpc(unit, spawn_position, team);
+@rpc("any_peer", "call_local")
+func build_unit_rpc(unit, spawn_position, target_team):
+	unit.position = spawn_position - Vector2(60 * randi_range(-1 ,1), 60 * randi_range(-1 ,1)); # temp offset
+	unit.team = target_team;
+	map.get_node("Units").add_child(unit);
+	if (team == target_team):
+		update_controllable_units();
 
 func get_units_in_area(area):
 	var u = []
@@ -246,6 +272,9 @@ func get_units_in_area(area):
 		if (unit.position.x > area[0].x and unit.position.x < area[1].x and unit.position.y > area[0].y and unit.position.y < area[1].y):
 			u.append(unit);
 	return u;
+
+func update_controllable_units():
+	controllable_units = get_tree().get_nodes_in_group("controllable_units");
+
 func exit_game():
-	print_debug("exiting game");
 	get_tree().quit();

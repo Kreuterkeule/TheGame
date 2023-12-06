@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dktdvup7s8iv5"]
+[gd_scene load_steps=6 format=3 uid="uid://dktdvup7s8iv5"]
 
 [ext_resource type="Script" path="res://Game/Units/worker_unit.gd" id="1_ghp3x"]
 [ext_resource type="Texture2D" uid="uid://dni5hudn55drt" path="res://MiniWorldSprites/Characters/Soldiers/Melee/AssasinTemplate.png" id="1_phsck"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w6jpr"]
+size = Vector2(48, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdgrn"]
 bg_color = Color(0.909804, 0.458824, 0, 0)
@@ -21,7 +24,58 @@ corner_radius_bottom_left = 5
 size = Vector2(12, 8)
 
 [node name="WorkerUnit" type="CharacterBody2D"]
+input_pickable = true
 script = ExtResource("1_ghp3x")
+
+[node name="Rays" type="Node2D" parent="."]
+
+[node name="RayFront" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayHardRight" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = 1.0472
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayHardRight2" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayHardLeft" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = -1.0472
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayHardLeft2" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayRight" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = 0.523599
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
+
+[node name="RayLeft" type="ShapeCast2D" parent="Rays"]
+z_index = -1
+rotation = -0.523599
+shape = SubResource("RectangleShape2D_w6jpr")
+target_position = Vector2(200, 0)
+collision_mask = 3
 
 [node name="Box" type="Panel" parent="."]
 visible = false
@@ -30,6 +84,7 @@ offset_top = -10.0
 offset_right = 26.0
 offset_bottom = 35.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_cdgrn")
+metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 11)
@@ -41,3 +96,9 @@ scale = Vector2(4, 4)
 texture = ExtResource("1_phsck")
 hframes = 5
 vframes = 12
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 50.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

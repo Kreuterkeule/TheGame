@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bebsbk78uleso"]
+
+[ext_resource type="Script" path="res://Game/UI/Menus/mining_base_action_menu.gd" id="1_5u2x1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj6xw"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.764706, 0.784314, 1)
+
+[node name="ActionMenu" type="CanvasLayer"]
+script = ExtResource("1_5u2x1")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 1597.0
+offset_top = 828.0
+offset_right = 1919.0
+offset_bottom = 1079.0
+
+[node name="WorkerUnitButton" type="Button" parent="."]
+offset_left = 1598.0
+offset_top = 828.0
+offset_right = 1709.0
+offset_bottom = 883.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_mj6xw")
+text = "Build Worker"
+
+[connection signal="pressed" from="WorkerUnitButton" to="." method="_on_worker_unit_button_pressed"]

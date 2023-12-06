@@ -1,6 +1,6 @@
 extends Node2D
 
-enum MENU { BUILD, ACTION }
+enum MENU { BUILD, ACTION, MINING_BASE_ACTION }
 
 @export var default_menu = MENU.ACTION;
 var old_menu :int = -1;
@@ -8,10 +8,12 @@ var old_menu :int = -1;
 var CLEAN_MENU = {
 	MENU.BUILD: Callable(self, "clean_action_menu_build"),
 	MENU.ACTION: Callable(self, "clean_action_menu_action"),
+	MENU.MINING_BASE_ACTION: Callable(self, "clean_action_menu_mining_base_action")
 };
 var ACTIVATE_MENU = {
 	MENU.BUILD: Callable(self, "activate_action_menu_build"),
 	MENU.ACTION: Callable(self, "activate_action_menu_action"),
+	MENU.MINING_BASE_ACTION: Callable(self, "activate_action_menu_mining_base_action")
 };
 
 func _ready():
@@ -39,3 +41,9 @@ func activate_action_menu_build():
 func activate_action_menu_action():
 	Game.change_action(Game.ACTION.NO_ACTION);
 	$Menus/ActionMenu.show();
+
+func activate_action_menu_mining_base_action():
+	$Menus/MiningBaseActionMenu.show();
+
+func clean_action_menu_mining_base_action():
+	$Menus/MiningBaseActionMenu.hide();
